@@ -7,68 +7,68 @@ using System.Text.Json;
 using System.Windows.Forms;
 
 /// <summary>
-/// Основная форма календаря с консольным дизайном в темной теме
+/// РћСЃРЅРѕРІРЅР°СЏ С„РѕСЂРјР° РєР°Р»РµРЅРґР°СЂСЏ СЃ РєРѕРЅСЃРѕР»СЊРЅС‹Рј РґРёР·Р°Р№РЅРѕРј РІ С‚РµРјРЅРѕР№ С‚РµРјРµ
 /// </summary>
 public class CalendarForm : Form
 {
-    // Основные элементы управления
-    private MonthCalendar calendar;              // Календарь для отображения года
-    private Panel leftPanel;                     // Левая панель для календаря
-    private Panel rightPanel;                    // Правая панель для управления событиями
-    private Panel topPanel;                      // Верхняя панель с кнопками
-    private Panel bottomPanel;                   // Нижняя панель для статуса
-    private Panel eventFormPanel;                // Панель формы событий
-    private Panel calendarContainer;             // Контейнер для календаря
+    // РћСЃРЅРѕРІРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ СѓРїСЂР°РІР»РµРЅРёСЏ
+    private MonthCalendar calendar;              // РљР°Р»РµРЅРґР°СЂСЊ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РіРѕРґР°
+    private Panel leftPanel;                     // Р›РµРІР°СЏ РїР°РЅРµР»СЊ РґР»СЏ РєР°Р»РµРЅРґР°СЂСЏ
+    private Panel rightPanel;                    // РџСЂР°РІР°СЏ РїР°РЅРµР»СЊ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ СЃРѕР±С‹С‚РёСЏРјРё
+    private Panel topPanel;                      // Р’РµСЂС…РЅСЏСЏ РїР°РЅРµР»СЊ СЃ РєРЅРѕРїРєР°РјРё
+    private Panel bottomPanel;                   // РќРёР¶РЅСЏСЏ РїР°РЅРµР»СЊ РґР»СЏ СЃС‚Р°С‚СѓСЃР°
+    private Panel eventFormPanel;                // РџР°РЅРµР»СЊ С„РѕСЂРјС‹ СЃРѕР±С‹С‚РёР№
+    private Panel calendarContainer;             // РљРѕРЅС‚РµР№РЅРµСЂ РґР»СЏ РєР°Р»РµРЅРґР°СЂСЏ
 
-    // Элементы формы событий
-    private TextBox eventTitleBox;               // Поле для названия события
-    private TextBox eventDescriptionBox;         // Поле для описания события
-    private DateTimePicker eventStartDatePicker; // Выбор даты начала
-    private DateTimePicker eventEndDatePicker;   // Выбор даты окончания
-    private DateTimePicker eventStartTimePicker; // Выбор времени начала
-    private DateTimePicker eventEndTimePicker;   // Выбор времени окончания
-    private CheckBox allDayCheckBox;             // Чекбокс "Весь день"
-    private ListView eventsListView;             // Список событий
+    // Р­Р»РµРјРµРЅС‚С‹ С„РѕСЂРјС‹ СЃРѕР±С‹С‚РёР№
+    private TextBox eventTitleBox;               // РџРѕР»Рµ РґР»СЏ РЅР°Р·РІР°РЅРёСЏ СЃРѕР±С‹С‚РёСЏ
+    private TextBox eventDescriptionBox;         // РџРѕР»Рµ РґР»СЏ РѕРїРёСЃР°РЅРёСЏ СЃРѕР±С‹С‚РёСЏ
+    private DateTimePicker eventStartDatePicker; // Р’С‹Р±РѕСЂ РґР°С‚С‹ РЅР°С‡Р°Р»Р°
+    private DateTimePicker eventEndDatePicker;   // Р’С‹Р±РѕСЂ РґР°С‚С‹ РѕРєРѕРЅС‡Р°РЅРёСЏ
+    private DateTimePicker eventStartTimePicker; // Р’С‹Р±РѕСЂ РІСЂРµРјРµРЅРё РЅР°С‡Р°Р»Р°
+    private DateTimePicker eventEndTimePicker;   // Р’С‹Р±РѕСЂ РІСЂРµРјРµРЅРё РѕРєРѕРЅС‡Р°РЅРёСЏ
+    private CheckBox allDayCheckBox;             // Р§РµРєР±РѕРєСЃ "Р’РµСЃСЊ РґРµРЅСЊ"
+    private ListView eventsListView;             // РЎРїРёСЃРѕРє СЃРѕР±С‹С‚РёР№
 
-    // Кнопки управления
-    private Button addEventButton;               // Кнопка добавления события
-    private Button editEventButton;              // Кнопка редактирования события
-    private Button deleteEventButton;            // Кнопка удаления события
-    private Button exportButton;                 // Кнопка экспорта
-    private Button importButton;                 // Кнопка импорта
-    private Button todayButton;                  // Кнопка "Сегодня"
-    private Button viewAllEventsButton;          // Кнопка просмотра всех событий
-    private Button accentColorButton;            // Кнопка смены темы
-    private Label statusLabel;                   // Метка статуса
-    private ComboBox eventTypeCombo;             // Выпадающий список типов событий
+    // РљРЅРѕРїРєРё СѓРїСЂР°РІР»РµРЅРёСЏ
+    private Button addEventButton;               // РљРЅРѕРїРєР° РґРѕР±Р°РІР»РµРЅРёСЏ СЃРѕР±С‹С‚РёСЏ
+    private Button editEventButton;              // РљРЅРѕРїРєР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СЃРѕР±С‹С‚РёСЏ
+    private Button deleteEventButton;            // РљРЅРѕРїРєР° СѓРґР°Р»РµРЅРёСЏ СЃРѕР±С‹С‚РёСЏ
+    private Button exportButton;                 // РљРЅРѕРїРєР° СЌРєСЃРїРѕСЂС‚Р°
+    private Button importButton;                 // РљРЅРѕРїРєР° РёРјРїРѕСЂС‚Р°
+    private Button todayButton;                  // РљРЅРѕРїРєР° "РЎРµРіРѕРґРЅСЏ"
+    private Button viewAllEventsButton;          // РљРЅРѕРїРєР° РїСЂРѕСЃРјРѕС‚СЂР° РІСЃРµС… СЃРѕР±С‹С‚РёР№
+    private Button accentColorButton;            // РљРЅРѕРїРєР° СЃРјРµРЅС‹ С‚РµРјС‹
+    private Label statusLabel;                   // РњРµС‚РєР° СЃС‚Р°С‚СѓСЃР°
+    private ComboBox eventTypeCombo;             // Р’С‹РїР°РґР°СЋС‰РёР№ СЃРїРёСЃРѕРє С‚РёРїРѕРІ СЃРѕР±С‹С‚РёР№
 
-    // Хранилище данных
+    // РҐСЂР°РЅРёР»РёС‰Рµ РґР°РЅРЅС‹С…
     private readonly Dictionary<DateTime, List<CalendarEvent>> events = new();
-    private CalendarEvent selectedEvent = null;  // Выбранное событие для редактирования
+    private CalendarEvent selectedEvent = null;  // Р’С‹Р±СЂР°РЅРЅРѕРµ СЃРѕР±С‹С‚РёРµ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
 
-    // Система акцентных цветов
+    // РЎРёСЃС‚РµРјР° Р°РєС†РµРЅС‚РЅС‹С… С†РІРµС‚РѕРІ
     private Color currentAccentColor = Color.FromArgb(0, 255, 127);
     private readonly Color[] accentColors = {
-        Color.FromArgb(0, 255, 127),   // Зеленый
-        Color.FromArgb(0, 174, 255),   // Синий
-        Color.FromArgb(255, 69, 0),    // Красно-оранжевый
-        Color.FromArgb(255, 215, 0),   // Золотой
-        Color.FromArgb(186, 85, 211),  // Средне-фиолетовый
-        Color.FromArgb(255, 20, 147),  // Темно-розовый
-        Color.FromArgb(0, 255, 255),   // Циан
+        Color.FromArgb(0, 255, 127),   // Р—РµР»РµРЅС‹Р№
+        Color.FromArgb(0, 174, 255),   // РЎРёРЅРёР№
+        Color.FromArgb(255, 69, 0),    // РљСЂР°СЃРЅРѕ-РѕСЂР°РЅР¶РµРІС‹Р№
+        Color.FromArgb(255, 215, 0),   // Р—РѕР»РѕС‚РѕР№
+        Color.FromArgb(186, 85, 211),  // РЎСЂРµРґРЅРµ-С„РёРѕР»РµС‚РѕРІС‹Р№
+        Color.FromArgb(255, 20, 147),  // РўРµРјРЅРѕ-СЂРѕР·РѕРІС‹Р№
+        Color.FromArgb(0, 255, 255),   // Р¦РёР°РЅ
     };
-    private int currentAccentIndex = 0;          // Индекс текущего акцентного цвета
+    private int currentAccentIndex = 0;          // РРЅРґРµРєСЃ С‚РµРєСѓС‰РµРіРѕ Р°РєС†РµРЅС‚РЅРѕРіРѕ С†РІРµС‚Р°
 
-    // Консольная цветовая схема
-    private readonly Color backgroundColor = Color.FromArgb(18, 18, 18);      // Глубокий черный фон
-    private readonly Color surfaceColor = Color.FromArgb(28, 28, 28);         // Темная поверхность
-    private readonly Color borderColor = Color.FromArgb(45, 45, 45);          // Серый цвет границ
-    private readonly Color textColor = Color.FromArgb(220, 220, 220);         // Светло-серый текст
-    private readonly Color mutedTextColor = Color.FromArgb(150, 150, 150);    // Приглушенный текст
-    private readonly Color buttonColor = Color.FromArgb(40, 40, 40);          // Фон кнопок
+    // РљРѕРЅСЃРѕР»СЊРЅР°СЏ С†РІРµС‚РѕРІР°СЏ СЃС…РµРјР°
+    private readonly Color backgroundColor = Color.FromArgb(18, 18, 18);      // Р“Р»СѓР±РѕРєРёР№ С‡РµСЂРЅС‹Р№ С„РѕРЅ
+    private readonly Color surfaceColor = Color.FromArgb(28, 28, 28);         // РўРµРјРЅР°СЏ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ
+    private readonly Color borderColor = Color.FromArgb(45, 45, 45);          // РЎРµСЂС‹Р№ С†РІРµС‚ РіСЂР°РЅРёС†
+    private readonly Color textColor = Color.FromArgb(220, 220, 220);         // РЎРІРµС‚Р»Рѕ-СЃРµСЂС‹Р№ С‚РµРєСЃС‚
+    private readonly Color mutedTextColor = Color.FromArgb(150, 150, 150);    // РџСЂРёРіР»СѓС€РµРЅРЅС‹Р№ С‚РµРєСЃС‚
+    private readonly Color buttonColor = Color.FromArgb(40, 40, 40);          // Р¤РѕРЅ РєРЅРѕРїРѕРє
 
     /// <summary>
-    /// Точка входа в приложение
+    /// РўРѕС‡РєР° РІС…РѕРґР° РІ РїСЂРёР»РѕР¶РµРЅРёРµ
     /// </summary>
     [STAThread]
     static void Main()
@@ -79,43 +79,43 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Конструктор формы - инициализирует все компоненты
+    /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ С„РѕСЂРјС‹ - РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ РІСЃРµ РєРѕРјРїРѕРЅРµРЅС‚С‹
     /// </summary>
     public CalendarForm()
     {
-        InitializeForm();        // Настройка основной формы
-        InitializePanels();      // Создание панелей
-        InitializeControls();    // Создание элементов управления
-        SetupEvents();          // Настройка событий
-        LoadSampleEvents();     // Загрузка примеров событий
+        InitializeForm();        // РќР°СЃС‚СЂРѕР№РєР° РѕСЃРЅРѕРІРЅРѕР№ С„РѕСЂРјС‹
+        InitializePanels();      // РЎРѕР·РґР°РЅРёРµ РїР°РЅРµР»РµР№
+        InitializeControls();    // РЎРѕР·РґР°РЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ СѓРїСЂР°РІР»РµРЅРёСЏ
+        SetupEvents();          // РќР°СЃС‚СЂРѕР№РєР° СЃРѕР±С‹С‚РёР№
+        LoadSampleEvents();     // Р—Р°РіСЂСѓР·РєР° РїСЂРёРјРµСЂРѕРІ СЃРѕР±С‹С‚РёР№
     }
 
     /// <summary>
-    /// Инициализация основных свойств формы
+    /// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РѕСЃРЅРѕРІРЅС‹С… СЃРІРѕР№СЃС‚РІ С„РѕСЂРјС‹
     /// </summary>
     private void InitializeForm()
     {
-        // Фиксированный размер окна для консистентного дизайна
+        // Р¤РёРєСЃРёСЂРѕРІР°РЅРЅС‹Р№ СЂР°Р·РјРµСЂ РѕРєРЅР° РґР»СЏ РєРѕРЅСЃРёСЃС‚РµРЅС‚РЅРѕРіРѕ РґРёР·Р°Р№РЅР°
         Size = new Size(1400, 900);
         MaximumSize = new Size(1400, 900);
         MinimumSize = new Size(1400, 900);
         FormBorderStyle = FormBorderStyle.FixedSingle;
         MaximizeBox = false;
 
-        // Применение темной темы
+        // РџСЂРёРјРµРЅРµРЅРёРµ С‚РµРјРЅРѕР№ С‚РµРјС‹
         BackColor = backgroundColor;
         ForeColor = textColor;
-        Font = new Font("Consolas", 9f); // Моноширинный шрифт для консольного вида
+        Font = new Font("Consolas", 9f); // РњРѕРЅРѕС€РёСЂРёРЅРЅС‹Р№ С€СЂРёС„С‚ РґР»СЏ РєРѕРЅСЃРѕР»СЊРЅРѕРіРѕ РІРёРґР°
         Text = "Calendar";
         StartPosition = FormStartPosition.CenterScreen;
     }
 
     /// <summary>
-    /// Создание и размещение основных панелей
+    /// РЎРѕР·РґР°РЅРёРµ Рё СЂР°Р·РјРµС‰РµРЅРёРµ РѕСЃРЅРѕРІРЅС‹С… РїР°РЅРµР»РµР№
     /// </summary>
     private void InitializePanels()
     {
-        // Верхняя панель с кнопками управления
+        // Р’РµСЂС…РЅСЏСЏ РїР°РЅРµР»СЊ СЃ РєРЅРѕРїРєР°РјРё СѓРїСЂР°РІР»РµРЅРёСЏ
         topPanel = new Panel
         {
             Dock = DockStyle.Top,
@@ -125,7 +125,7 @@ public class CalendarForm : Form
         };
         topPanel.Paint += (s, e) => DrawBorder(e.Graphics, topPanel.ClientRectangle, borderColor);
 
-        // Левая панель для календаря
+        // Р›РµРІР°СЏ РїР°РЅРµР»СЊ РґР»СЏ РєР°Р»РµРЅРґР°СЂСЏ
         leftPanel = new Panel
         {
             Dock = DockStyle.Left,
@@ -134,17 +134,17 @@ public class CalendarForm : Form
             Padding = new Padding(15),
         };
 
-        // Увеличенный контейнер для календаря с правильными размерами
+        // РЈРІРµР»РёС‡РµРЅРЅС‹Р№ РєРѕРЅС‚РµР№РЅРµСЂ РґР»СЏ РєР°Р»РµРЅРґР°СЂСЏ СЃ РїСЂР°РІРёР»СЊРЅС‹РјРё СЂР°Р·РјРµСЂР°РјРё
         calendarContainer = new Panel
         {
             Location = new Point(15, 15),
-            Size = new Size(820, 780), // Увеличенная высота для лучшего размещения
+            Size = new Size(820, 780), // РЈРІРµР»РёС‡РµРЅРЅР°СЏ РІС‹СЃРѕС‚Р° РґР»СЏ Р»СѓС‡С€РµРіРѕ СЂР°Р·РјРµС‰РµРЅРёСЏ
             BackColor = surfaceColor,
-            Padding = new Padding(5), // Минимальные отступы для максимального использования пространства
+            Padding = new Padding(5), // РњРёРЅРёРјР°Р»СЊРЅС‹Рµ РѕС‚СЃС‚СѓРїС‹ РґР»СЏ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІР°
         };
         calendarContainer.Paint += (s, e) => DrawBorder(e.Graphics, calendarContainer.ClientRectangle, borderColor);
 
-        // Правая панель для управления событиями
+        // РџСЂР°РІР°СЏ РїР°РЅРµР»СЊ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ СЃРѕР±С‹С‚РёСЏРјРё
         rightPanel = new Panel
         {
             Dock = DockStyle.Fill,
@@ -152,7 +152,7 @@ public class CalendarForm : Form
             Padding = new Padding(15),
         };
 
-        // Нижняя панель для отображения статуса
+        // РќРёР¶РЅСЏСЏ РїР°РЅРµР»СЊ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ СЃС‚Р°С‚СѓСЃР°
         bottomPanel = new Panel
         {
             Dock = DockStyle.Bottom,
@@ -161,29 +161,29 @@ public class CalendarForm : Form
         };
         bottomPanel.Paint += (s, e) => DrawBorder(e.Graphics, bottomPanel.ClientRectangle, borderColor);
 
-        // Добавление контейнера календаря в левую панель
+        // Р”РѕР±Р°РІР»РµРЅРёРµ РєРѕРЅС‚РµР№РЅРµСЂР° РєР°Р»РµРЅРґР°СЂСЏ РІ Р»РµРІСѓСЋ РїР°РЅРµР»СЊ
         leftPanel.Controls.Add(calendarContainer);
-        // Добавление всех панелей в форму
+        // Р”РѕР±Р°РІР»РµРЅРёРµ РІСЃРµС… РїР°РЅРµР»РµР№ РІ С„РѕСЂРјСѓ
         Controls.AddRange(new Control[] { rightPanel, leftPanel, topPanel, bottomPanel });
     }
 
     /// <summary>
-    /// Инициализация всех элементов управления
+    /// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РІСЃРµС… СЌР»РµРјРµРЅС‚РѕРІ СѓРїСЂР°РІР»РµРЅРёСЏ
     /// </summary>
     private void InitializeControls()
     {
-        InitializeTopPanelControls();    // Элементы верхней панели
-        InitializeCalendar();           // Календарь
-        InitializeRightPanelControls(); // Элементы правой панели
-        InitializeStatusBar();          // Строка состояния
+        InitializeTopPanelControls();    // Р­Р»РµРјРµРЅС‚С‹ РІРµСЂС…РЅРµР№ РїР°РЅРµР»Рё
+        InitializeCalendar();           // РљР°Р»РµРЅРґР°СЂСЊ
+        InitializeRightPanelControls(); // Р­Р»РµРјРµРЅС‚С‹ РїСЂР°РІРѕР№ РїР°РЅРµР»Рё
+        InitializeStatusBar();          // РЎС‚СЂРѕРєР° СЃРѕСЃС‚РѕСЏРЅРёСЏ
     }
 
     /// <summary>
-    /// Создание элементов верхней панели (заголовок и кнопки)
+    /// РЎРѕР·РґР°РЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ РІРµСЂС…РЅРµР№ РїР°РЅРµР»Рё (Р·Р°РіРѕР»РѕРІРѕРє Рё РєРЅРѕРїРєРё)
     /// </summary>
     private void InitializeTopPanelControls()
     {
-        // Заголовок приложения
+        // Р—Р°РіРѕР»РѕРІРѕРє РїСЂРёР»РѕР¶РµРЅРёСЏ
         var titleLabel = new Label
         {
             Text = "CALENDAR",
@@ -194,70 +194,70 @@ public class CalendarForm : Form
             BackColor = Color.Transparent
         };
 
-        // Единый размер для всех кнопок верхней панели
+        // Р•РґРёРЅС‹Р№ СЂР°Р·РјРµСЂ РґР»СЏ РІСЃРµС… РєРЅРѕРїРѕРє РІРµСЂС…РЅРµР№ РїР°РЅРµР»Рё
         var buttonSize = new Size(90, 30);
         var buttonY = 15;
 
-        // Создание кнопок с консольным стилем
-        todayButton = CreateConsoleButton("TODAY", new Point(200, buttonY), buttonSize, true); // Основная кнопка
+        // РЎРѕР·РґР°РЅРёРµ РєРЅРѕРїРѕРє СЃ РєРѕРЅСЃРѕР»СЊРЅС‹Рј СЃС‚РёР»РµРј
+        todayButton = CreateConsoleButton("TODAY", new Point(200, buttonY), buttonSize, true); // РћСЃРЅРѕРІРЅР°СЏ РєРЅРѕРїРєР°
         exportButton = CreateConsoleButton("EXPORT", new Point(300, buttonY), buttonSize);
         importButton = CreateConsoleButton("IMPORT", new Point(400, buttonY), buttonSize);
         viewAllEventsButton = CreateConsoleButton("ALL", new Point(500, buttonY), buttonSize);
 
-        // Кнопка темы всегда с цветом
+        // РљРЅРѕРїРєР° С‚РµРјС‹ РІСЃРµРіРґР° СЃ С†РІРµС‚РѕРј
         accentColorButton = CreateConsoleButton("THEME", new Point(600, buttonY), buttonSize, true, true);
 
-        // Добавление всех элементов в верхнюю панель
+        // Р”РѕР±Р°РІР»РµРЅРёРµ РІСЃРµС… СЌР»РµРјРµРЅС‚РѕРІ РІ РІРµСЂС…РЅСЋСЋ РїР°РЅРµР»СЊ
         topPanel.Controls.AddRange(new Control[] {
             titleLabel, todayButton, exportButton, importButton, viewAllEventsButton, accentColorButton
         });
     }
 
     /// <summary>
-    /// Инициализация календаря с увеличенным размером
+    /// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєР°Р»РµРЅРґР°СЂСЏ СЃ СѓРІРµР»РёС‡РµРЅРЅС‹Рј СЂР°Р·РјРµСЂРѕРј
     /// </summary>
     private void InitializeCalendar()
     {
-        // Создание календаря с настройками для годового просмотра
+        // РЎРѕР·РґР°РЅРёРµ РєР°Р»РµРЅРґР°СЂСЏ СЃ РЅР°СЃС‚СЂРѕР№РєР°РјРё РґР»СЏ РіРѕРґРѕРІРѕРіРѕ РїСЂРѕСЃРјРѕС‚СЂР°
         calendar = new MonthCalendar
         {
             Location = new Point(5, 5),
-            Size = new Size(810, 770), // Увеличенный размер для лучшего заполнения контейнера
+            Size = new Size(810, 770), // РЈРІРµР»РёС‡РµРЅРЅС‹Р№ СЂР°Р·РјРµСЂ РґР»СЏ Р»СѓС‡С€РµРіРѕ Р·Р°РїРѕР»РЅРµРЅРёСЏ РєРѕРЅС‚РµР№РЅРµСЂР°
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
 
-            // Принудительное применение темных цветов
+            // РџСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕРµ РїСЂРёРјРµРЅРµРЅРёРµ С‚РµРјРЅС‹С… С†РІРµС‚РѕРІ
             BackColor = surfaceColor,
             ForeColor = textColor,
             TitleBackColor = currentAccentColor,
             TitleForeColor = Color.Black,
             TrailingForeColor = mutedTextColor,
 
-            // Настройки макета для отображения полного года (3 столбца, 4 строки)
-            CalendarDimensions = new Size(3, 4), // 3x4 для лучшего размещения 12 месяцев
+            // РќР°СЃС‚СЂРѕР№РєРё РјР°РєРµС‚Р° РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РїРѕР»РЅРѕРіРѕ РіРѕРґР° (3 СЃС‚РѕР»Р±С†Р°, 4 СЃС‚СЂРѕРєРё)
+            CalendarDimensions = new Size(3, 4), // 3x4 РґР»СЏ Р»СѓС‡С€РµРіРѕ СЂР°Р·РјРµС‰РµРЅРёСЏ 12 РјРµСЃСЏС†РµРІ
             FirstDayOfWeek = Day.Sunday,
             ShowToday = true,
             ShowTodayCircle = true,
             ShowWeekNumbers = false,
-            MaxSelectionCount = 42, // Разрешить выбор диапазона дат
-            Font = new Font("Consolas", 8f), // Оптимальный шрифт для размещения 12 месяцев
+            MaxSelectionCount = 42, // Р Р°Р·СЂРµС€РёС‚СЊ РІС‹Р±РѕСЂ РґРёР°РїР°Р·РѕРЅР° РґР°С‚
+            Font = new Font("Consolas", 8f), // РћРїС‚РёРјР°Р»СЊРЅС‹Р№ С€СЂРёС„С‚ РґР»СЏ СЂР°Р·РјРµС‰РµРЅРёСЏ 12 РјРµСЃСЏС†РµРІ
 
-            // Ограничение диапазона дат текущим годом
+            // РћРіСЂР°РЅРёС‡РµРЅРёРµ РґРёР°РїР°Р·РѕРЅР° РґР°С‚ С‚РµРєСѓС‰РёРј РіРѕРґРѕРј
             MinDate = new DateTime(DateTime.Now.Year, 1, 1),
             MaxDate = new DateTime(2030, 12, 31)
         };
 
         calendarContainer.Controls.Add(calendar);
-        calendar.BringToFront(); // Принудительное размещение календаря поверх других элементов
+        calendar.BringToFront(); // РџСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕРµ СЂР°Р·РјРµС‰РµРЅРёРµ РєР°Р»РµРЅРґР°СЂСЏ РїРѕРІРµСЂС… РґСЂСѓРіРёС… СЌР»РµРјРµРЅС‚РѕРІ
     }
 
     /// <summary>
-    /// Принудительное применение темы к календарю (Windows Forms календарь сопротивляется темной теме)
+    /// РџСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕРµ РїСЂРёРјРµРЅРµРЅРёРµ С‚РµРјС‹ Рє РєР°Р»РµРЅРґР°СЂСЋ (Windows Forms РєР°Р»РµРЅРґР°СЂСЊ СЃРѕРїСЂРѕС‚РёРІР»СЏРµС‚СЃСЏ С‚РµРјРЅРѕР№ С‚РµРјРµ)
     /// </summary>
     private void ForceCalendarTheme()
     {
         try
         {
-            // Принудительное применение темной темы несколько раз для гарантии
+            // РџСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕРµ РїСЂРёРјРµРЅРµРЅРёРµ С‚РµРјРЅРѕР№ С‚РµРјС‹ РЅРµСЃРєРѕР»СЊРєРѕ СЂР°Р· РґР»СЏ РіР°СЂР°РЅС‚РёРё
             for (int i = 0; i < 3; i++)
             {
                 calendar.BackColor = surfaceColor;
@@ -267,12 +267,12 @@ public class CalendarForm : Form
                 calendar.TrailingForeColor = mutedTextColor;
             }
 
-            // Принудительное обновление визуального состояния
+            // РџСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕРµ РѕР±РЅРѕРІР»РµРЅРёРµ РІРёР·СѓР°Р»СЊРЅРѕРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ
             calendar.Refresh();
             calendar.Invalidate();
             calendar.Update();
 
-            // Дополнительный таймер для гарантии применения темы через небольшую задержку
+            // Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Р№ С‚Р°Р№РјРµСЂ РґР»СЏ РіР°СЂР°РЅС‚РёРё РїСЂРёРјРµРЅРµРЅРёСЏ С‚РµРјС‹ С‡РµСЂРµР· РЅРµР±РѕР»СЊС€СѓСЋ Р·Р°РґРµСЂР¶РєСѓ
             var themeTimer = new System.Windows.Forms.Timer { Interval = 200 };
             themeTimer.Tick += (s, e) => {
                 calendar.BackColor = surfaceColor;
@@ -291,21 +291,21 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Создание элементов управления в правой панели
+    /// РЎРѕР·РґР°РЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ СѓРїСЂР°РІР»РµРЅРёСЏ РІ РїСЂР°РІРѕР№ РїР°РЅРµР»Рё
     /// </summary>
     private void InitializeRightPanelControls()
     {
-        // Панель формы событий с уменьшенной высотой для лучшего размещения кнопок
+        // РџР°РЅРµР»СЊ С„РѕСЂРјС‹ СЃРѕР±С‹С‚РёР№ СЃ СѓРјРµРЅСЊС€РµРЅРЅРѕР№ РІС‹СЃРѕС‚РѕР№ РґР»СЏ Р»СѓС‡С€РµРіРѕ СЂР°Р·РјРµС‰РµРЅРёСЏ РєРЅРѕРїРѕРє
         eventFormPanel = new Panel
         {
             Location = new Point(0, 0),
-            Size = new Size(500, 370), // Уменьшенная высота для правильного позиционирования
+            Size = new Size(500, 370), // РЈРјРµРЅСЊС€РµРЅРЅР°СЏ РІС‹СЃРѕС‚Р° РґР»СЏ РїСЂР°РІРёР»СЊРЅРѕРіРѕ РїРѕР·РёС†РёРѕРЅРёСЂРѕРІР°РЅРёСЏ
             BackColor = surfaceColor,
             Padding = new Padding(15)
         };
         eventFormPanel.Paint += (s, e) => DrawBorder(e.Graphics, eventFormPanel.ClientRectangle, borderColor);
 
-        // Заголовок секции управления событиями
+        // Р—Р°РіРѕР»РѕРІРѕРє СЃРµРєС†РёРё СѓРїСЂР°РІР»РµРЅРёСЏ СЃРѕР±С‹С‚РёСЏРјРё
         var eventFormLabel = new Label
         {
             Text = "EVENT MANAGEMENT",
@@ -316,11 +316,11 @@ public class CalendarForm : Form
             BackColor = Color.Transparent
         };
 
-        // Поля ввода для основной информации о событии
+        // РџРѕР»СЏ РІРІРѕРґР° РґР»СЏ РѕСЃРЅРѕРІРЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё Рѕ СЃРѕР±С‹С‚РёРё
         eventTitleBox = CreateConsoleTextBox("Event Title", new Point(15, 50), new Size(450, 25));
         eventDescriptionBox = CreateConsoleTextBox("Description", new Point(15, 85), new Size(450, 50), true);
 
-        // Элементы управления диапазоном дат
+        // Р­Р»РµРјРµРЅС‚С‹ СѓРїСЂР°РІР»РµРЅРёСЏ РґРёР°РїР°Р·РѕРЅРѕРј РґР°С‚
         var dateRangeLabel = CreateConsoleLabel("DATE RANGE:", new Point(15, 150));
         eventStartDatePicker = CreateConsoleDatePicker(new Point(15, 175), new Size(130, 25));
         var toLabel = CreateConsoleLabel("TO", new Point(155, 178));
@@ -328,12 +328,12 @@ public class CalendarForm : Form
         toLabel.TextAlign = ContentAlignment.MiddleCenter;
         eventEndDatePicker = CreateConsoleDatePicker(new Point(190, 175), new Size(130, 25));
 
-        // Элементы управления временем
+        // Р­Р»РµРјРµРЅС‚С‹ СѓРїСЂР°РІР»РµРЅРёСЏ РІСЂРµРјРµРЅРµРј
         var timeLabel = CreateConsoleLabel("TIME:", new Point(15, 210));
         eventStartTimePicker = CreateConsoleTimePicker(new Point(15, 235), new Size(100, 25));
         eventEndTimePicker = CreateConsoleTimePicker(new Point(125, 235), new Size(100, 25));
 
-        // Чекбокс для событий на весь день
+        // Р§РµРєР±РѕРєСЃ РґР»СЏ СЃРѕР±С‹С‚РёР№ РЅР° РІРµСЃСЊ РґРµРЅСЊ
         allDayCheckBox = new CheckBox
         {
             Text = "ALL DAY",
@@ -345,21 +345,21 @@ public class CalendarForm : Form
             FlatStyle = FlatStyle.Flat
         };
 
-        // Выпадающий список типов событий
+        // Р’С‹РїР°РґР°СЋС‰РёР№ СЃРїРёСЃРѕРє С‚РёРїРѕРІ СЃРѕР±С‹С‚РёР№
         var typeLabel = CreateConsoleLabel("TYPE:", new Point(15, 270));
         eventTypeCombo = CreateConsoleComboBox(new Point(70, 267), new Size(120, 25));
         eventTypeCombo.Items.AddRange(new[] { "MEETING", "APPOINTMENT", "REMINDER", "HOLIDAY", "PERSONAL", "WORK" });
         eventTypeCombo.SelectedIndex = 0;
 
-        // Кнопки управления событиями с улучшенным позиционированием
+        // РљРЅРѕРїРєРё СѓРїСЂР°РІР»РµРЅРёСЏ СЃРѕР±С‹С‚РёСЏРјРё СЃ СѓР»СѓС‡С€РµРЅРЅС‹Рј РїРѕР·РёС†РёРѕРЅРёСЂРѕРІР°РЅРёРµРј
         var buttonSize = new Size(100, 30);
         addEventButton = CreateConsoleButton("ADD", new Point(15, 300), buttonSize, true);
         editEventButton = CreateConsoleButton("UPDATE", new Point(125, 300), buttonSize);
         deleteEventButton = CreateConsoleButton("DELETE", new Point(235, 300), buttonSize);
 
-        editEventButton.Enabled = false; // Отключена по умолчанию до выбора события
+        editEventButton.Enabled = false; // РћС‚РєР»СЋС‡РµРЅР° РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РґРѕ РІС‹Р±РѕСЂР° СЃРѕР±С‹С‚РёСЏ
 
-        // Добавление всех элементов в панель формы
+        // Р”РѕР±Р°РІР»РµРЅРёРµ РІСЃРµС… СЌР»РµРјРµРЅС‚РѕРІ РІ РїР°РЅРµР»СЊ С„РѕСЂРјС‹
         eventFormPanel.Controls.AddRange(new Control[] {
             eventFormLabel, eventTitleBox, eventDescriptionBox, dateRangeLabel,
             eventStartDatePicker, toLabel, eventEndDatePicker, timeLabel,
@@ -367,18 +367,18 @@ public class CalendarForm : Form
             typeLabel, eventTypeCombo, addEventButton, editEventButton, deleteEventButton
         });
 
-        // Заголовок списка предстоящих событий
+        // Р—Р°РіРѕР»РѕРІРѕРє СЃРїРёСЃРєР° РїСЂРµРґСЃС‚РѕСЏС‰РёС… СЃРѕР±С‹С‚РёР№
         var eventsLabel = new Label
         {
             Text = "UPCOMING EVENTS",
-            Location = new Point(0, 380), // Подстроено под новую высоту панели
+            Location = new Point(0, 380), // РџРѕРґСЃС‚СЂРѕРµРЅРѕ РїРѕРґ РЅРѕРІСѓСЋ РІС‹СЃРѕС‚Сѓ РїР°РЅРµР»Рё
             Size = new Size(200, 25),
             ForeColor = textColor,
             Font = new Font("Consolas", 11f, FontStyle.Bold),
             BackColor = Color.Transparent
         };
 
-        // ListView для отображения событий с темными заголовками
+        // ListView РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ СЃРѕР±С‹С‚РёР№ СЃ С‚РµРјРЅС‹РјРё Р·Р°РіРѕР»РѕРІРєР°РјРё
         eventsListView = new ListView
         {
             Location = new Point(0, 410),
@@ -392,50 +392,50 @@ public class CalendarForm : Form
             MultiSelect = false,
             Font = new Font("Consolas", 9f),
             HeaderStyle = ColumnHeaderStyle.Nonclickable,
-            OwnerDraw = true // Включение кастомной отрисовки для темных заголовков
+            OwnerDraw = true // Р’РєР»СЋС‡РµРЅРёРµ РєР°СЃС‚РѕРјРЅРѕР№ РѕС‚СЂРёСЃРѕРІРєРё РґР»СЏ С‚РµРјРЅС‹С… Р·Р°РіРѕР»РѕРІРєРѕРІ
         };
 
-        // Настройка колонок ListView
+        // РќР°СЃС‚СЂРѕР№РєР° РєРѕР»РѕРЅРѕРє ListView
         eventsListView.Columns.Add("DATE", 100);
         eventsListView.Columns.Add("TIME", 80);
         eventsListView.Columns.Add("TITLE", 200);
         eventsListView.Columns.Add("TYPE", 80);
 
-        // Кастомная отрисовка заголовков ListView для устранения белых углов
+        // РљР°СЃС‚РѕРјРЅР°СЏ РѕС‚СЂРёСЃРѕРІРєР° Р·Р°РіРѕР»РѕРІРєРѕРІ ListView РґР»СЏ СѓСЃС‚СЂР°РЅРµРЅРёСЏ Р±РµР»С‹С… СѓРіР»РѕРІ
         eventsListView.DrawColumnHeader += (s, e) =>
         {
-            // Заливка всего заголовка темным цветом для устранения белых артефактов
+            // Р—Р°Р»РёРІРєР° РІСЃРµРіРѕ Р·Р°РіРѕР»РѕРІРєР° С‚РµРјРЅС‹Рј С†РІРµС‚РѕРј РґР»СЏ СѓСЃС‚СЂР°РЅРµРЅРёСЏ Р±РµР»С‹С… Р°СЂС‚РµС„Р°РєС‚РѕРІ
             e.Graphics.FillRectangle(new SolidBrush(borderColor), e.Bounds);
 
-            // Рисование границы заголовка
+            // Р РёСЃРѕРІР°РЅРёРµ РіСЂР°РЅРёС†С‹ Р·Р°РіРѕР»РѕРІРєР°
             using (var pen = new Pen(mutedTextColor))
             {
                 e.Graphics.DrawRectangle(pen, e.Bounds.X, e.Bounds.Y, e.Bounds.Width - 1, e.Bounds.Height - 1);
             }
 
-            // Отрисовка текста заголовка
+            // РћС‚СЂРёСЃРѕРІРєР° С‚РµРєСЃС‚Р° Р·Р°РіРѕР»РѕРІРєР°
             var textBounds = new Rectangle(e.Bounds.X + 5, e.Bounds.Y + 2, e.Bounds.Width - 10, e.Bounds.Height - 4);
             TextRenderer.DrawText(e.Graphics, e.Header.Text, new Font("Consolas", 9f, FontStyle.Bold),
                 textBounds, textColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
         };
 
-        // Использование стандартной отрисовки для элементов списка
+        // РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ СЃС‚Р°РЅРґР°СЂС‚РЅРѕР№ РѕС‚СЂРёСЃРѕРІРєРё РґР»СЏ СЌР»РµРјРµРЅС‚РѕРІ СЃРїРёСЃРєР°
         eventsListView.DrawItem += (s, e) => { e.DrawDefault = true; };
         eventsListView.DrawSubItem += (s, e) => { e.DrawDefault = true; };
 
-        // Обработка перерисовки для устранения белых артефактов при прокрутке
+        // РћР±СЂР°Р±РѕС‚РєР° РїРµСЂРµСЂРёСЃРѕРІРєРё РґР»СЏ СѓСЃС‚СЂР°РЅРµРЅРёСЏ Р±РµР»С‹С… Р°СЂС‚РµС„Р°РєС‚РѕРІ РїСЂРё РїСЂРѕРєСЂСѓС‚РєРµ
         eventsListView.Paint += (s, e) =>
         {
-            // Заливка фона ListView для устранения белых углов
+            // Р—Р°Р»РёРІРєР° С„РѕРЅР° ListView РґР»СЏ СѓСЃС‚СЂР°РЅРµРЅРёСЏ Р±РµР»С‹С… СѓРіР»РѕРІ
             e.Graphics.FillRectangle(new SolidBrush(surfaceColor), eventsListView.ClientRectangle);
         };
 
-        // Добавление элементов в правую панель
+        // Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ РІ РїСЂР°РІСѓСЋ РїР°РЅРµР»СЊ
         rightPanel.Controls.AddRange(new Control[] { eventFormPanel, eventsLabel, eventsListView });
     }
 
     /// <summary>
-    /// Инициализация строки состояния
+    /// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃС‚СЂРѕРєРё СЃРѕСЃС‚РѕСЏРЅРёСЏ
     /// </summary>
     private void InitializeStatusBar()
     {
@@ -453,34 +453,34 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Создание кнопки в консольном стиле с поддержкой кнопки темы
+    /// РЎРѕР·РґР°РЅРёРµ РєРЅРѕРїРєРё РІ РєРѕРЅСЃРѕР»СЊРЅРѕРј СЃС‚РёР»Рµ СЃ РїРѕРґРґРµСЂР¶РєРѕР№ РєРЅРѕРїРєРё С‚РµРјС‹
     /// </summary>
-    /// <param name="text">Текст кнопки</param>
-    /// <param name="location">Позиция кнопки</param>
-    /// <param name="size">Размер кнопки</param>
-    /// <param name="isPrimary">Является ли кнопка основной (с акцентным цветом)</param>
-    /// <param name="isThemeButton">Является ли кнопка кнопкой смены темы (всегда цветная)</param>
+    /// <param name="text">РўРµРєСЃС‚ РєРЅРѕРїРєРё</param>
+    /// <param name="location">РџРѕР·РёС†РёСЏ РєРЅРѕРїРєРё</param>
+    /// <param name="size">Р Р°Р·РјРµСЂ РєРЅРѕРїРєРё</param>
+    /// <param name="isPrimary">РЇРІР»СЏРµС‚СЃСЏ Р»Рё РєРЅРѕРїРєР° РѕСЃРЅРѕРІРЅРѕР№ (СЃ Р°РєС†РµРЅС‚РЅС‹Рј С†РІРµС‚РѕРј)</param>
+    /// <param name="isThemeButton">РЇРІР»СЏРµС‚СЃСЏ Р»Рё РєРЅРѕРїРєР° РєРЅРѕРїРєРѕР№ СЃРјРµРЅС‹ С‚РµРјС‹ (РІСЃРµРіРґР° С†РІРµС‚РЅР°СЏ)</param>
     private Button CreateConsoleButton(string text, Point location, Size size, bool isPrimary = false, bool isThemeButton = false)
     {
-        // Определение цветов кнопки в зависимости от её типа
+        // РћРїСЂРµРґРµР»РµРЅРёРµ С†РІРµС‚РѕРІ РєРЅРѕРїРєРё РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РµС‘ С‚РёРїР°
         Color buttonBackColor;
         Color buttonForeColor;
 
         if (isThemeButton)
         {
-            // Кнопка темы всегда отображается с текущим акцентным цветом
+            // РљРЅРѕРїРєР° С‚РµРјС‹ РІСЃРµРіРґР° РѕС‚РѕР±СЂР°Р¶Р°РµС‚СЃСЏ СЃ С‚РµРєСѓС‰РёРј Р°РєС†РµРЅС‚РЅС‹Рј С†РІРµС‚РѕРј
             buttonBackColor = currentAccentColor;
             buttonForeColor = Color.Black;
         }
         else if (isPrimary)
         {
-            // Основные кнопки используют акцентный цвет
+            // РћСЃРЅРѕРІРЅС‹Рµ РєРЅРѕРїРєРё РёСЃРїРѕР»СЊР·СѓСЋС‚ Р°РєС†РµРЅС‚РЅС‹Р№ С†РІРµС‚
             buttonBackColor = currentAccentColor;
             buttonForeColor = Color.Black;
         }
         else
         {
-            // Обычные кнопки используют стандартный темный цвет
+            // РћР±С‹С‡РЅС‹Рµ РєРЅРѕРїРєРё РёСЃРїРѕР»СЊР·СѓСЋС‚ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ С‚РµРјРЅС‹Р№ С†РІРµС‚
             buttonBackColor = buttonColor;
             buttonForeColor = textColor;
         }
@@ -497,16 +497,16 @@ public class CalendarForm : Form
             Cursor = Cursors.Hand
         };
 
-        // Настройка плоского стиля кнопки
+        // РќР°СЃС‚СЂРѕР№РєР° РїР»РѕСЃРєРѕРіРѕ СЃС‚РёР»СЏ РєРЅРѕРїРєРё
         button.FlatAppearance.BorderSize = 1;
         button.FlatAppearance.BorderColor = borderColor;
 
-        // Эффекты наведения мыши
+        // Р­С„С„РµРєС‚С‹ РЅР°РІРµРґРµРЅРёСЏ РјС‹С€Рё
         button.MouseEnter += (s, e) =>
         {
             if (isPrimary || isThemeButton)
             {
-                // Осветление акцентного цвета при наведении на основные кнопки
+                // РћСЃРІРµС‚Р»РµРЅРёРµ Р°РєС†РµРЅС‚РЅРѕРіРѕ С†РІРµС‚Р° РїСЂРё РЅР°РІРµРґРµРЅРёРё РЅР° РѕСЃРЅРѕРІРЅС‹Рµ РєРЅРѕРїРєРё
                 button.BackColor = Color.FromArgb(
                     Math.Min(255, currentAccentColor.R + 30),
                     Math.Min(255, currentAccentColor.G + 30),
@@ -515,14 +515,14 @@ public class CalendarForm : Form
             }
             else
             {
-                // Осветление обычной кнопки при наведении
+                // РћСЃРІРµС‚Р»РµРЅРёРµ РѕР±С‹С‡РЅРѕР№ РєРЅРѕРїРєРё РїСЂРё РЅР°РІРµРґРµРЅРёРё
                 button.BackColor = Color.FromArgb(60, 60, 60);
             }
         };
 
         button.MouseLeave += (s, e) =>
         {
-            // Восстановление исходного цвета при уходе курсора
+            // Р’РѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РёСЃС…РѕРґРЅРѕРіРѕ С†РІРµС‚Р° РїСЂРё СѓС…РѕРґРµ РєСѓСЂСЃРѕСЂР°
             if (isThemeButton)
             {
                 button.BackColor = currentAccentColor;
@@ -537,7 +537,7 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Создание текстового поля в консольном стиле с функциональностью placeholder'а
+    /// РЎРѕР·РґР°РЅРёРµ С‚РµРєСЃС‚РѕРІРѕРіРѕ РїРѕР»СЏ РІ РєРѕРЅСЃРѕР»СЊРЅРѕРј СЃС‚РёР»Рµ СЃ С„СѓРЅРєС†РёРѕРЅР°Р»СЊРЅРѕСЃС‚СЊСЋ placeholder'Р°
     /// </summary>
     private TextBox CreateConsoleTextBox(string placeholder, Point location, Size size, bool multiline = false)
     {
@@ -552,14 +552,14 @@ public class CalendarForm : Form
             Multiline = multiline
         };
 
-        // Установка placeholder текста
+        // РЈСЃС‚Р°РЅРѕРІРєР° placeholder С‚РµРєСЃС‚Р°
         textBox.Text = placeholder;
         textBox.ForeColor = mutedTextColor;
 
-        // Обработка фокуса для реализации placeholder функциональности
+        // РћР±СЂР°Р±РѕС‚РєР° С„РѕРєСѓСЃР° РґР»СЏ СЂРµР°Р»РёР·Р°С†РёРё placeholder С„СѓРЅРєС†РёРѕРЅР°Р»СЊРЅРѕСЃС‚Рё
         textBox.Enter += (s, e) =>
         {
-            // Очистка placeholder при получении фокуса
+            // РћС‡РёСЃС‚РєР° placeholder РїСЂРё РїРѕР»СѓС‡РµРЅРёРё С„РѕРєСѓСЃР°
             if (textBox.Text == placeholder)
             {
                 textBox.Text = "";
@@ -569,7 +569,7 @@ public class CalendarForm : Form
 
         textBox.Leave += (s, e) =>
         {
-            // Восстановление placeholder при потере фокуса и пустом поле
+            // Р’РѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ placeholder РїСЂРё РїРѕС‚РµСЂРµ С„РѕРєСѓСЃР° Рё РїСѓСЃС‚РѕРј РїРѕР»Рµ
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
                 textBox.Text = placeholder;
@@ -581,7 +581,7 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Создание выбора даты в консольном стиле
+    /// РЎРѕР·РґР°РЅРёРµ РІС‹Р±РѕСЂР° РґР°С‚С‹ РІ РєРѕРЅСЃРѕР»СЊРЅРѕРј СЃС‚РёР»Рµ
     /// </summary>
     private DateTimePicker CreateConsoleDatePicker(Point location, Size size)
     {
@@ -595,7 +595,7 @@ public class CalendarForm : Form
             Font = new Font("Consolas", 9f)
         };
 
-        // Настройка цветов выпадающего календаря
+        // РќР°СЃС‚СЂРѕР№РєР° С†РІРµС‚РѕРІ РІС‹РїР°РґР°СЋС‰РµРіРѕ РєР°Р»РµРЅРґР°СЂСЏ
         picker.CalendarForeColor = textColor;
         picker.CalendarMonthBackground = surfaceColor;
         picker.CalendarTitleBackColor = currentAccentColor;
@@ -606,7 +606,7 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Создание выбора времени в консольном стиле
+    /// РЎРѕР·РґР°РЅРёРµ РІС‹Р±РѕСЂР° РІСЂРµРјРµРЅРё РІ РєРѕРЅСЃРѕР»СЊРЅРѕРј СЃС‚РёР»Рµ
     /// </summary>
     private DateTimePicker CreateConsoleTimePicker(Point location, Size size)
     {
@@ -617,13 +617,13 @@ public class CalendarForm : Form
             BackColor = backgroundColor,
             ForeColor = textColor,
             Format = DateTimePickerFormat.Time,
-            ShowUpDown = true, // Использование кнопок вверх/вниз вместо выпадающего списка
+            ShowUpDown = true, // РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РєРЅРѕРїРѕРє РІРІРµСЂС…/РІРЅРёР· РІРјРµСЃС‚Рѕ РІС‹РїР°РґР°СЋС‰РµРіРѕ СЃРїРёСЃРєР°
             Font = new Font("Consolas", 9f)
         };
     }
 
     /// <summary>
-    /// Создание выпадающего списка в консольном стиле
+    /// РЎРѕР·РґР°РЅРёРµ РІС‹РїР°РґР°СЋС‰РµРіРѕ СЃРїРёСЃРєР° РІ РєРѕРЅСЃРѕР»СЊРЅРѕРј СЃС‚РёР»Рµ
     /// </summary>
     private ComboBox CreateConsoleComboBox(Point location, Size size)
     {
@@ -634,13 +634,13 @@ public class CalendarForm : Form
             BackColor = backgroundColor,
             ForeColor = textColor,
             FlatStyle = FlatStyle.Flat,
-            DropDownStyle = ComboBoxStyle.DropDownList, // Только выбор из списка, без ввода
+            DropDownStyle = ComboBoxStyle.DropDownList, // РўРѕР»СЊРєРѕ РІС‹Р±РѕСЂ РёР· СЃРїРёСЃРєР°, Р±РµР· РІРІРѕРґР°
             Font = new Font("Consolas", 9f)
         };
     }
 
     /// <summary>
-    /// Создание метки в консольном стиле
+    /// РЎРѕР·РґР°РЅРёРµ РјРµС‚РєРё РІ РєРѕРЅСЃРѕР»СЊРЅРѕРј СЃС‚РёР»Рµ
     /// </summary>
     private Label CreateConsoleLabel(string text, Point location)
     {
@@ -656,7 +656,7 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Отрисовка границы панели
+    /// РћС‚СЂРёСЃРѕРІРєР° РіСЂР°РЅРёС†С‹ РїР°РЅРµР»Рё
     /// </summary>
     private void DrawBorder(Graphics g, Rectangle rect, Color color)
     {
@@ -665,39 +665,39 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Применение акцентного цвета ко всем элементам с принудительным обновлением календаря
+    /// РџСЂРёРјРµРЅРµРЅРёРµ Р°РєС†РµРЅС‚РЅРѕРіРѕ С†РІРµС‚Р° РєРѕ РІСЃРµРј СЌР»РµРјРµРЅС‚Р°Рј СЃ РїСЂРёРЅСѓРґРёС‚РµР»СЊРЅС‹Рј РѕР±РЅРѕРІР»РµРЅРёРµРј РєР°Р»РµРЅРґР°СЂСЏ
     /// </summary>
     private void ApplyAccentColor()
     {
-        // Применение акцентного цвета к основным кнопкам
+        // РџСЂРёРјРµРЅРµРЅРёРµ Р°РєС†РµРЅС‚РЅРѕРіРѕ С†РІРµС‚Р° Рє РѕСЃРЅРѕРІРЅС‹Рј РєРЅРѕРїРєР°Рј
         todayButton.BackColor = currentAccentColor;
         addEventButton.BackColor = currentAccentColor;
 
-        // Кнопка темы всегда остается с акцентным цветом
+        // РљРЅРѕРїРєР° С‚РµРјС‹ РІСЃРµРіРґР° РѕСЃС‚Р°РµС‚СЃСЏ СЃ Р°РєС†РµРЅС‚РЅС‹Рј С†РІРµС‚РѕРј
         accentColorButton.BackColor = currentAccentColor;
         accentColorButton.ForeColor = Color.Black;
 
-        // Применение акцентного цвета к календарю
+        // РџСЂРёРјРµРЅРµРЅРёРµ Р°РєС†РµРЅС‚РЅРѕРіРѕ С†РІРµС‚Р° Рє РєР°Р»РµРЅРґР°СЂСЋ
         calendar.TitleBackColor = currentAccentColor;
         calendar.BackColor = surfaceColor;
         calendar.ForeColor = textColor;
 
-        // Применение к элементам выбора даты
+        // РџСЂРёРјРµРЅРµРЅРёРµ Рє СЌР»РµРјРµРЅС‚Р°Рј РІС‹Р±РѕСЂР° РґР°С‚С‹
         eventStartDatePicker.CalendarTitleBackColor = currentAccentColor;
         eventEndDatePicker.CalendarTitleBackColor = currentAccentColor;
 
-        // Принудительное обновление визуального состояния
+        // РџСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕРµ РѕР±РЅРѕРІР»РµРЅРёРµ РІРёР·СѓР°Р»СЊРЅРѕРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ
         calendar.Refresh();
         calendar.Invalidate();
         Refresh();
     }
 
     /// <summary>
-    /// Настройка обработчиков событий для всех элементов управления
+    /// РќР°СЃС‚СЂРѕР№РєР° РѕР±СЂР°Р±РѕС‚С‡РёРєРѕРІ СЃРѕР±С‹С‚РёР№ РґР»СЏ РІСЃРµС… СЌР»РµРјРµРЅС‚РѕРІ СѓРїСЂР°РІР»РµРЅРёСЏ
     /// </summary>
     private void SetupEvents()
     {
-        // Обработчики событий календаря и формы
+        // РћР±СЂР°Р±РѕС‚С‡РёРєРё СЃРѕР±С‹С‚РёР№ РєР°Р»РµРЅРґР°СЂСЏ Рё С„РѕСЂРјС‹
         calendar.DateSelected += Calendar_DateSelected;
         addEventButton.Click += AddEvent_Click;
         editEventButton.Click += EditEvent_Click;
@@ -713,11 +713,11 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Обработчик смены акцентного цвета (циклическое переключение)
+    /// РћР±СЂР°Р±РѕС‚С‡РёРє СЃРјРµРЅС‹ Р°РєС†РµРЅС‚РЅРѕРіРѕ С†РІРµС‚Р° (С†РёРєР»РёС‡РµСЃРєРѕРµ РїРµСЂРµРєР»СЋС‡РµРЅРёРµ)
     /// </summary>
     private void AccentColor_Click(object sender, EventArgs e)
     {
-        // Циклическое переключение между доступными акцентными цветами
+        // Р¦РёРєР»РёС‡РµСЃРєРѕРµ РїРµСЂРµРєР»СЋС‡РµРЅРёРµ РјРµР¶РґСѓ РґРѕСЃС‚СѓРїРЅС‹РјРё Р°РєС†РµРЅС‚РЅС‹РјРё С†РІРµС‚Р°РјРё
         currentAccentIndex = (currentAccentIndex + 1) % accentColors.Length;
         currentAccentColor = accentColors[currentAccentIndex];
         ApplyAccentColor();
@@ -725,15 +725,15 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Обработчик выбора даты в календаре
+    /// РћР±СЂР°Р±РѕС‚С‡РёРє РІС‹Р±РѕСЂР° РґР°С‚С‹ РІ РєР°Р»РµРЅРґР°СЂРµ
     /// </summary>
     private void Calendar_DateSelected(object sender, DateRangeEventArgs e)
     {
-        // Автоматическое заполнение полей даты в форме события
+        // РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРµ Р·Р°РїРѕР»РЅРµРЅРёРµ РїРѕР»РµР№ РґР°С‚С‹ РІ С„РѕСЂРјРµ СЃРѕР±С‹С‚РёСЏ
         eventStartDatePicker.Value = e.Start;
         eventEndDatePicker.Value = e.End;
 
-        // Отображение выбранного диапазона в строке состояния
+        // РћС‚РѕР±СЂР°Р¶РµРЅРёРµ РІС‹Р±СЂР°РЅРЅРѕРіРѕ РґРёР°РїР°Р·РѕРЅР° РІ СЃС‚СЂРѕРєРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ
         if (e.Start.Date == e.End.Date)
         {
             statusLabel.Text = $"SELECTED: {e.Start:MMM dd, yyyy}".ToUpper();
@@ -743,23 +743,23 @@ public class CalendarForm : Form
             statusLabel.Text = $"SELECTED RANGE: {e.Start:MMM dd} - {e.End:MMM dd, yyyy}".ToUpper();
         }
 
-        RefreshEventsList(); // Обновление списка событий для выбранного диапазона
+        RefreshEventsList(); // РћР±РЅРѕРІР»РµРЅРёРµ СЃРїРёСЃРєР° СЃРѕР±С‹С‚РёР№ РґР»СЏ РІС‹Р±СЂР°РЅРЅРѕРіРѕ РґРёР°РїР°Р·РѕРЅР°
     }
 
     /// <summary>
-    /// Обработчик добавления нового события
+    /// РћР±СЂР°Р±РѕС‚С‡РёРє РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ СЃРѕР±С‹С‚РёСЏ
     /// </summary>
     private void AddEvent_Click(object sender, EventArgs e)
     {
-        if (!ValidateEventForm()) return; // Проверка валидности введенных данных
+        if (!ValidateEventForm()) return; // РџСЂРѕРІРµСЂРєР° РІР°Р»РёРґРЅРѕСЃС‚Рё РІРІРµРґРµРЅРЅС‹С… РґР°РЅРЅС‹С…
 
         var startDate = eventStartDatePicker.Value.Date;
         var endDate = eventEndDatePicker.Value.Date;
 
-        // Создание событий для каждого дня в выбранном диапазоне
+        // РЎРѕР·РґР°РЅРёРµ СЃРѕР±С‹С‚РёР№ РґР»СЏ РєР°Р¶РґРѕРіРѕ РґРЅСЏ РІ РІС‹Р±СЂР°РЅРЅРѕРј РґРёР°РїР°Р·РѕРЅРµ
         for (var date = startDate; date <= endDate; date = date.AddDays(1))
         {
-            // Определение времени события в зависимости от флага "весь день"
+            // РћРїСЂРµРґРµР»РµРЅРёРµ РІСЂРµРјРµРЅРё СЃРѕР±С‹С‚РёСЏ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С„Р»Р°РіР° "РІРµСЃСЊ РґРµРЅСЊ"
             var eventDateTime = allDayCheckBox.Checked ?
                 date :
                 date.Add(eventStartTimePicker.Value.TimeOfDay);
@@ -768,7 +768,7 @@ public class CalendarForm : Form
                 date.AddDays(1).AddSeconds(-1) :
                 date.Add(eventEndTimePicker.Value.TimeOfDay);
 
-            // Создание нового объекта события
+            // РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р° СЃРѕР±С‹С‚РёСЏ
             var newEvent = new CalendarEvent
             {
                 Title = eventTitleBox.Text,
@@ -779,14 +779,14 @@ public class CalendarForm : Form
                 Type = eventTypeCombo.SelectedItem.ToString()
             };
 
-            // Добавление события в словарь событий
+            // Р”РѕР±Р°РІР»РµРЅРёРµ СЃРѕР±С‹С‚РёСЏ РІ СЃР»РѕРІР°СЂСЊ СЃРѕР±С‹С‚РёР№
             if (!events.ContainsKey(date))
                 events[date] = new List<CalendarEvent>();
 
             events[date].Add(newEvent);
         }
 
-        // Обновление интерфейса после добавления события
+        // РћР±РЅРѕРІР»РµРЅРёРµ РёРЅС‚РµСЂС„РµР№СЃР° РїРѕСЃР»Рµ РґРѕР±Р°РІР»РµРЅРёСЏ СЃРѕР±С‹С‚РёСЏ
         RefreshCalendarBoldDates();
         RefreshEventsList();
         ClearEventForm();
@@ -794,39 +794,39 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Обработчик редактирования выбранного события
+    /// РћР±СЂР°Р±РѕС‚С‡РёРє СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РІС‹Р±СЂР°РЅРЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ
     /// </summary>
     private void EditEvent_Click(object sender, EventArgs e)
     {
         if (selectedEvent == null || !ValidateEventForm()) return;
 
-        // Обновление свойств выбранного события данными из формы
+        // РћР±РЅРѕРІР»РµРЅРёРµ СЃРІРѕР№СЃС‚РІ РІС‹Р±СЂР°РЅРЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ РґР°РЅРЅС‹РјРё РёР· С„РѕСЂРјС‹
         selectedEvent.Title = eventTitleBox.Text;
         selectedEvent.Description = eventDescriptionBox.Text == "Description" ? "" : eventDescriptionBox.Text;
         selectedEvent.IsAllDay = allDayCheckBox.Checked;
         selectedEvent.Type = eventTypeCombo.SelectedItem.ToString();
 
-        // Обновление времени события, если это не событие на весь день
+        // РћР±РЅРѕРІР»РµРЅРёРµ РІСЂРµРјРµРЅРё СЃРѕР±С‹С‚РёСЏ, РµСЃР»Рё СЌС‚Рѕ РЅРµ СЃРѕР±С‹С‚РёРµ РЅР° РІРµСЃСЊ РґРµРЅСЊ
         if (!allDayCheckBox.Checked)
         {
             selectedEvent.StartDateTime = eventStartDatePicker.Value.Date.Add(eventStartTimePicker.Value.TimeOfDay);
             selectedEvent.EndDateTime = eventEndDatePicker.Value.Date.Add(eventEndTimePicker.Value.TimeOfDay);
         }
 
-        // Обновление интерфейса
+        // РћР±РЅРѕРІР»РµРЅРёРµ РёРЅС‚РµСЂС„РµР№СЃР°
         RefreshEventsList();
         ClearEventForm();
         statusLabel.Text = "EVENT UPDATED SUCCESSFULLY";
     }
 
     /// <summary>
-    /// Обработчик удаления выбранного события
+    /// РћР±СЂР°Р±РѕС‚С‡РёРє СѓРґР°Р»РµРЅРёСЏ РІС‹Р±СЂР°РЅРЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ
     /// </summary>
     private void DeleteEvent_Click(object sender, EventArgs e)
     {
         if (selectedEvent == null) return;
 
-        // Подтверждение удаления у пользователя
+        // РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ СѓРґР°Р»РµРЅРёСЏ Сѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         var result = MessageBox.Show("DELETE THIS EVENT?",
             "CONFIRM DELETE", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -836,14 +836,14 @@ public class CalendarForm : Form
             if (events.ContainsKey(eventDate))
             {
                 events[eventDate].Remove(selectedEvent);
-                // Удаление даты из словаря, если больше нет событий на эту дату
+                // РЈРґР°Р»РµРЅРёРµ РґР°С‚С‹ РёР· СЃР»РѕРІР°СЂСЏ, РµСЃР»Рё Р±РѕР»СЊС€Рµ РЅРµС‚ СЃРѕР±С‹С‚РёР№ РЅР° СЌС‚Сѓ РґР°С‚Сѓ
                 if (!events[eventDate].Any())
                 {
                     events.Remove(eventDate);
                 }
             }
 
-            // Обновление интерфейса после удаления
+            // РћР±РЅРѕРІР»РµРЅРёРµ РёРЅС‚РµСЂС„РµР№СЃР° РїРѕСЃР»Рµ СѓРґР°Р»РµРЅРёСЏ
             RefreshCalendarBoldDates();
             RefreshEventsList();
             ClearEventForm();
@@ -852,7 +852,7 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Обработчик экспорта событий в JSON файл
+    /// РћР±СЂР°Р±РѕС‚С‡РёРє СЌРєСЃРїРѕСЂС‚Р° СЃРѕР±С‹С‚РёР№ РІ JSON С„Р°Р№Р»
     /// </summary>
     private void Export_Click(object sender, EventArgs e)
     {
@@ -867,7 +867,7 @@ public class CalendarForm : Form
         {
             try
             {
-                // Подготовка данных для экспорта в удобном для JSON формате
+                // РџРѕРґРіРѕС‚РѕРІРєР° РґР°РЅРЅС‹С… РґР»СЏ СЌРєСЃРїРѕСЂС‚Р° РІ СѓРґРѕР±РЅРѕРј РґР»СЏ JSON С„РѕСЂРјР°С‚Рµ
                 var exportData = events.SelectMany(kvp =>
                     kvp.Value.Select(evt => new
                     {
@@ -881,7 +881,7 @@ public class CalendarForm : Form
                         IsAllDay = evt.IsAllDay
                     })).ToList();
 
-                // Сериализация в JSON с красивым форматированием и сохранение в файл
+                // РЎРµСЂРёР°Р»РёР·Р°С†РёСЏ РІ JSON СЃ РєСЂР°СЃРёРІС‹Рј С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµРј Рё СЃРѕС…СЂР°РЅРµРЅРёРµ РІ С„Р°Р№Р»
                 var json = JsonSerializer.Serialize(exportData, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(dialog.FileName, json);
 
@@ -896,7 +896,7 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Обработчик импорта событий из JSON файла
+    /// РћР±СЂР°Р±РѕС‚С‡РёРє РёРјРїРѕСЂС‚Р° СЃРѕР±С‹С‚РёР№ РёР· JSON С„Р°Р№Р»Р°
     /// </summary>
     private void Import_Click(object sender, EventArgs e)
     {
@@ -910,14 +910,14 @@ public class CalendarForm : Form
         {
             try
             {
-                // Чтение и десериализация JSON файла
+                // Р§С‚РµРЅРёРµ Рё РґРµСЃРµСЂРёР°Р»РёР·Р°С†РёСЏ JSON С„Р°Р№Р»Р°
                 var json = File.ReadAllText(dialog.FileName);
                 var importData = JsonSerializer.Deserialize<JsonElement[]>(json);
 
                 int importedCount = 0;
                 foreach (var item in importData)
                 {
-                    // Извлечение данных события из JSON элемента
+                    // РР·РІР»РµС‡РµРЅРёРµ РґР°РЅРЅС‹С… СЃРѕР±С‹С‚РёСЏ РёР· JSON СЌР»РµРјРµРЅС‚Р°
                     var dateStr = item.GetProperty("StartDate").GetString();
                     var timeStr = item.GetProperty("StartTime").GetString();
                     var endDateStr = item.GetProperty("EndDate").GetString();
@@ -927,7 +927,7 @@ public class CalendarForm : Form
                     var type = item.GetProperty("Type").GetString();
                     var isAllDay = item.GetProperty("IsAllDay").GetBoolean();
 
-                    // Парсинг дат и времени, создание события при успешном парсинге
+                    // РџР°СЂСЃРёРЅРі РґР°С‚ Рё РІСЂРµРјРµРЅРё, СЃРѕР·РґР°РЅРёРµ СЃРѕР±С‹С‚РёСЏ РїСЂРё СѓСЃРїРµС€РЅРѕРј РїР°СЂСЃРёРЅРіРµ
                     if (DateTime.TryParse($"{dateStr} {timeStr}", out var startDateTime) &&
                         DateTime.TryParse($"{endDateStr} {endTimeStr}", out var endDateTime))
                     {
@@ -941,7 +941,7 @@ public class CalendarForm : Form
                             Type = type
                         };
 
-                        // Добавление события в словарь
+                        // Р”РѕР±Р°РІР»РµРЅРёРµ СЃРѕР±С‹С‚РёСЏ РІ СЃР»РѕРІР°СЂСЊ
                         var eventDate = startDateTime.Date;
                         if (!events.ContainsKey(eventDate))
                             events[eventDate] = new List<CalendarEvent>();
@@ -951,7 +951,7 @@ public class CalendarForm : Form
                     }
                 }
 
-                // Обновление интерфейса после импорта
+                // РћР±РЅРѕРІР»РµРЅРёРµ РёРЅС‚РµСЂС„РµР№СЃР° РїРѕСЃР»Рµ РёРјРїРѕСЂС‚Р°
                 RefreshCalendarBoldDates();
                 RefreshEventsList();
                 statusLabel.Text = $"IMPORTED {importedCount} EVENTS";
@@ -965,7 +965,7 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Переход к сегодняшней дате в календаре
+    /// РџРµСЂРµС…РѕРґ Рє СЃРµРіРѕРґРЅСЏС€РЅРµР№ РґР°С‚Рµ РІ РєР°Р»РµРЅРґР°СЂРµ
     /// </summary>
     private void Today_Click(object sender, EventArgs e)
     {
@@ -975,7 +975,7 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Отображение окна со всеми событиями
+    /// РћС‚РѕР±СЂР°Р¶РµРЅРёРµ РѕРєРЅР° СЃРѕ РІСЃРµРјРё СЃРѕР±С‹С‚РёСЏРјРё
     /// </summary>
     private void ViewAllEvents_Click(object sender, EventArgs e)
     {
@@ -984,13 +984,13 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Обработчик выбора события в списке для редактирования
+    /// РћР±СЂР°Р±РѕС‚С‡РёРє РІС‹Р±РѕСЂР° СЃРѕР±С‹С‚РёСЏ РІ СЃРїРёСЃРєРµ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
     /// </summary>
     private void EventsList_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (eventsListView.SelectedItems.Count > 0)
         {
-            // Заполнение формы данными выбранного события
+            // Р—Р°РїРѕР»РЅРµРЅРёРµ С„РѕСЂРјС‹ РґР°РЅРЅС‹РјРё РІС‹Р±СЂР°РЅРЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ
             var item = eventsListView.SelectedItems[0];
             selectedEvent = (CalendarEvent)item.Tag;
 
@@ -1005,13 +1005,13 @@ public class CalendarForm : Form
             allDayCheckBox.Checked = selectedEvent.IsAllDay;
             eventTypeCombo.SelectedItem = selectedEvent.Type;
 
-            // Активация кнопки редактирования
+            // РђРєС‚РёРІР°С†РёСЏ РєРЅРѕРїРєРё СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
             editEventButton.Enabled = true;
             addEventButton.Text = "ADD NEW";
         }
         else
         {
-            // Очистка выбора и возврат к режиму добавления
+            // РћС‡РёСЃС‚РєР° РІС‹Р±РѕСЂР° Рё РІРѕР·РІСЂР°С‚ Рє СЂРµР¶РёРјСѓ РґРѕР±Р°РІР»РµРЅРёСЏ
             selectedEvent = null;
             editEventButton.Enabled = false;
             addEventButton.Text = "ADD";
@@ -1019,28 +1019,28 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Обработчик изменения чекбокса "Весь день"
+    /// РћР±СЂР°Р±РѕС‚С‡РёРє РёР·РјРµРЅРµРЅРёСЏ С‡РµРєР±РѕРєСЃР° "Р’РµСЃСЊ РґРµРЅСЊ"
     /// </summary>
     private void AllDay_CheckedChanged(object sender, EventArgs e)
     {
-        // Отключение/включение элементов выбора времени в зависимости от состояния чекбокса
+        // РћС‚РєР»СЋС‡РµРЅРёРµ/РІРєР»СЋС‡РµРЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ РІС‹Р±РѕСЂР° РІСЂРµРјРµРЅРё РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ СЃРѕСЃС‚РѕСЏРЅРёСЏ С‡РµРєР±РѕРєСЃР°
         eventStartTimePicker.Enabled = !allDayCheckBox.Checked;
         eventEndTimePicker.Enabled = !allDayCheckBox.Checked;
     }
 
     /// <summary>
-    /// Валидация данных формы события перед сохранением
+    /// Р’Р°Р»РёРґР°С†РёСЏ РґР°РЅРЅС‹С… С„РѕСЂРјС‹ СЃРѕР±С‹С‚РёСЏ РїРµСЂРµРґ СЃРѕС…СЂР°РЅРµРЅРёРµРј
     /// </summary>
     private bool ValidateEventForm()
     {
-        // Проверка заполнения обязательного поля названия события
+        // РџСЂРѕРІРµСЂРєР° Р·Р°РїРѕР»РЅРµРЅРёСЏ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕРіРѕ РїРѕР»СЏ РЅР°Р·РІР°РЅРёСЏ СЃРѕР±С‹С‚РёСЏ
         if (eventTitleBox.Text == "Event Title" || string.IsNullOrWhiteSpace(eventTitleBox.Text))
         {
             MessageBox.Show("PLEASE ENTER AN EVENT TITLE.", "VALIDATION ERROR", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return false;
         }
 
-        // Проверка корректности диапазона дат (конец не раньше начала)
+        // РџСЂРѕРІРµСЂРєР° РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚Рё РґРёР°РїР°Р·РѕРЅР° РґР°С‚ (РєРѕРЅРµС† РЅРµ СЂР°РЅСЊС€Рµ РЅР°С‡Р°Р»Р°)
         if (eventEndDatePicker.Value < eventStartDatePicker.Value)
         {
             MessageBox.Show("END DATE CANNOT BE BEFORE START DATE.", "VALIDATION ERROR", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -1051,7 +1051,7 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Обновление списка событий для выбранного диапазона дат
+    /// РћР±РЅРѕРІР»РµРЅРёРµ СЃРїРёСЃРєР° СЃРѕР±С‹С‚РёР№ РґР»СЏ РІС‹Р±СЂР°РЅРЅРѕРіРѕ РґРёР°РїР°Р·РѕРЅР° РґР°С‚
     /// </summary>
     private void RefreshEventsList()
     {
@@ -1060,7 +1060,7 @@ public class CalendarForm : Form
         var startDate = calendar.SelectionStart.Date;
         var endDate = calendar.SelectionEnd.Date;
 
-        // Сбор всех событий из выбранного диапазона дат
+        // РЎР±РѕСЂ РІСЃРµС… СЃРѕР±С‹С‚РёР№ РёР· РІС‹Р±СЂР°РЅРЅРѕРіРѕ РґРёР°РїР°Р·РѕРЅР° РґР°С‚
         var relevantEvents = new List<CalendarEvent>();
 
         for (var date = startDate; date <= endDate; date = date.AddDays(1))
@@ -1071,14 +1071,14 @@ public class CalendarForm : Form
             }
         }
 
-        // Добавление событий в ListView с сортировкой по времени начала
+        // Р”РѕР±Р°РІР»РµРЅРёРµ СЃРѕР±С‹С‚РёР№ РІ ListView СЃ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РїРѕ РІСЂРµРјРµРЅРё РЅР°С‡Р°Р»Р°
         foreach (var evt in relevantEvents.OrderBy(e => e.StartDateTime))
         {
             var item = new ListViewItem(evt.StartDateTime.ToString("MMM dd").ToUpper());
             item.SubItems.Add(evt.IsAllDay ? "ALL DAY" : evt.StartDateTime.ToString("HH:mm"));
             item.SubItems.Add(evt.Title.ToUpper());
             item.SubItems.Add(evt.Type);
-            item.Tag = evt; // Сохранение ссылки на событие для последующего редактирования
+            item.Tag = evt; // РЎРѕС…СЂР°РЅРµРЅРёРµ СЃСЃС‹Р»РєРё РЅР° СЃРѕР±С‹С‚РёРµ РґР»СЏ РїРѕСЃР»РµРґСѓСЋС‰РµРіРѕ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
             item.BackColor = surfaceColor;
             item.ForeColor = textColor;
             eventsListView.Items.Add(item);
@@ -1086,27 +1086,27 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Обновление выделенных дат в календаре (жирным шрифтом для дат с событиями)
+    /// РћР±РЅРѕРІР»РµРЅРёРµ РІС‹РґРµР»РµРЅРЅС‹С… РґР°С‚ РІ РєР°Р»РµРЅРґР°СЂРµ (Р¶РёСЂРЅС‹Рј С€СЂРёС„С‚РѕРј РґР»СЏ РґР°С‚ СЃ СЃРѕР±С‹С‚РёСЏРјРё)
     /// </summary>
     private void RefreshCalendarBoldDates()
     {
-        // Выделение всех дат, на которые запланированы события
+        // Р’С‹РґРµР»РµРЅРёРµ РІСЃРµС… РґР°С‚, РЅР° РєРѕС‚РѕСЂС‹Рµ Р·Р°РїР»Р°РЅРёСЂРѕРІР°РЅС‹ СЃРѕР±С‹С‚РёСЏ
         calendar.BoldedDates = events.Keys.ToArray();
         calendar.UpdateBoldedDates();
     }
 
     /// <summary>
-    /// Очистка формы события и возврат к состоянию по умолчанию
+    /// РћС‡РёСЃС‚РєР° С„РѕСЂРјС‹ СЃРѕР±С‹С‚РёСЏ Рё РІРѕР·РІСЂР°С‚ Рє СЃРѕСЃС‚РѕСЏРЅРёСЋ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
     /// </summary>
     private void ClearEventForm()
     {
-        // Сброс всех полей формы к placeholder значениям
+        // РЎР±СЂРѕСЃ РІСЃРµС… РїРѕР»РµР№ С„РѕСЂРјС‹ Рє placeholder Р·РЅР°С‡РµРЅРёСЏРј
         eventTitleBox.Text = "Event Title";
         eventTitleBox.ForeColor = mutedTextColor;
         eventDescriptionBox.Text = "Description";
         eventDescriptionBox.ForeColor = mutedTextColor;
         eventStartTimePicker.Value = DateTime.Now;
-        eventEndTimePicker.Value = DateTime.Now.AddHours(1); // Время окончания по умолчанию через час
+        eventEndTimePicker.Value = DateTime.Now.AddHours(1); // Р’СЂРµРјСЏ РѕРєРѕРЅС‡Р°РЅРёСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ С‡РµСЂРµР· С‡Р°СЃ
         allDayCheckBox.Checked = false;
         eventTypeCombo.SelectedIndex = 0;
         selectedEvent = null;
@@ -1115,7 +1115,7 @@ public class CalendarForm : Form
     }
 
     /// <summary>
-    /// Загрузка примеров событий для демонстрации функциональности
+    /// Р—Р°РіСЂСѓР·РєР° РїСЂРёРјРµСЂРѕРІ СЃРѕР±С‹С‚РёР№ РґР»СЏ РґРµРјРѕРЅСЃС‚СЂР°С†РёРё С„СѓРЅРєС†РёРѕРЅР°Р»СЊРЅРѕСЃС‚Рё
     /// </summary>
     private void LoadSampleEvents()
     {
@@ -1127,7 +1127,7 @@ public class CalendarForm : Form
             new CalendarEvent { Title = "PROJECT DEADLINE", Description = "Submit final project", StartDateTime = today.AddDays(7), EndDateTime = today.AddDays(7).AddDays(1), Type = "WORK", IsAllDay = true }
         };
 
-        // Добавление примеров событий в словарь для демонстрации
+        // Р”РѕР±Р°РІР»РµРЅРёРµ РїСЂРёРјРµСЂРѕРІ СЃРѕР±С‹С‚РёР№ РІ СЃР»РѕРІР°СЂСЊ РґР»СЏ РґРµРјРѕРЅСЃС‚СЂР°С†РёРё
         foreach (var evt in sampleEvents)
         {
             var eventDate = evt.StartDateTime.Date;
@@ -1136,26 +1136,26 @@ public class CalendarForm : Form
             events[eventDate].Add(evt);
         }
 
-        // Обновление отображения календаря и списка событий
+        // РћР±РЅРѕРІР»РµРЅРёРµ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РєР°Р»РµРЅРґР°СЂСЏ Рё СЃРїРёСЃРєР° СЃРѕР±С‹С‚РёР№
         RefreshCalendarBoldDates();
         RefreshEventsList();
     }
 }
 
 /// <summary>
-/// Класс для представления события календаря
+/// РљР»Р°СЃСЃ РґР»СЏ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ СЃРѕР±С‹С‚РёСЏ РєР°Р»РµРЅРґР°СЂСЏ
 /// </summary>
 public class CalendarEvent
 {
-    public string Title { get; set; }           // Название события
-    public string Description { get; set; }     // Описание события
-    public DateTime StartDateTime { get; set; }  // Дата и время начала
-    public DateTime EndDateTime { get; set; }    // Дата и время окончания
-    public bool IsAllDay { get; set; }          // Флаг события на весь день
-    public string Type { get; set; }            // Тип события (встреча, напоминание и т.д.)
+    public string Title { get; set; }           // РќР°Р·РІР°РЅРёРµ СЃРѕР±С‹С‚РёСЏ
+    public string Description { get; set; }     // РћРїРёСЃР°РЅРёРµ СЃРѕР±С‹С‚РёСЏ
+    public DateTime StartDateTime { get; set; }  // Р”Р°С‚Р° Рё РІСЂРµРјСЏ РЅР°С‡Р°Р»Р°
+    public DateTime EndDateTime { get; set; }    // Р”Р°С‚Р° Рё РІСЂРµРјСЏ РѕРєРѕРЅС‡Р°РЅРёСЏ
+    public bool IsAllDay { get; set; }          // Р¤Р»Р°Рі СЃРѕР±С‹С‚РёСЏ РЅР° РІРµСЃСЊ РґРµРЅСЊ
+    public string Type { get; set; }            // РўРёРї СЃРѕР±С‹С‚РёСЏ (РІСЃС‚СЂРµС‡Р°, РЅР°РїРѕРјРёРЅР°РЅРёРµ Рё С‚.Рґ.)
 
     /// <summary>
-    /// Строковое представление события для отображения в списках
+    /// РЎС‚СЂРѕРєРѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ СЃРѕР±С‹С‚РёСЏ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РІ СЃРїРёСЃРєР°С…
     /// </summary>
     public override string ToString()
     {
@@ -1165,7 +1165,7 @@ public class CalendarEvent
 }
 
 /// <summary>
-/// Форма для отображения всех событий в хронологическом порядке
+/// Р¤РѕСЂРјР° РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РІСЃРµС… СЃРѕР±С‹С‚РёР№ РІ С…СЂРѕРЅРѕР»РѕРіРёС‡РµСЃРєРѕРј РїРѕСЂСЏРґРєРµ
 /// </summary>
 public class AllEventsForm : Form
 {
@@ -1173,7 +1173,7 @@ public class AllEventsForm : Form
     private readonly Dictionary<DateTime, List<CalendarEvent>> events;
 
     /// <summary>
-    /// Конструктор формы всех событий с передачей цветовой схемы
+    /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ С„РѕСЂРјС‹ РІСЃРµС… СЃРѕР±С‹С‚РёР№ СЃ РїРµСЂРµРґР°С‡РµР№ С†РІРµС‚РѕРІРѕР№ СЃС…РµРјС‹
     /// </summary>
     public AllEventsForm(Dictionary<DateTime, List<CalendarEvent>> events, Color accent, Color bg, Color surface, Color border, Color text, Color muted)
     {
@@ -1183,7 +1183,7 @@ public class AllEventsForm : Form
     }
 
     /// <summary>
-    /// Инициализация формы всех событий с применением темной темы
+    /// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ С„РѕСЂРјС‹ РІСЃРµС… СЃРѕР±С‹С‚РёР№ СЃ РїСЂРёРјРµРЅРµРЅРёРµРј С‚РµРјРЅРѕР№ С‚РµРјС‹
     /// </summary>
     private void InitializeForm(Color accent, Color bg, Color surface, Color border, Color text, Color muted)
     {
@@ -1194,7 +1194,7 @@ public class AllEventsForm : Form
         StartPosition = FormStartPosition.CenterParent;
         Font = new Font("Consolas", 9f);
 
-        // ListView для отображения всех событий с кастомными заголовками
+        // ListView РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РІСЃРµС… СЃРѕР±С‹С‚РёР№ СЃ РєР°СЃС‚РѕРјРЅС‹РјРё Р·Р°РіРѕР»РѕРІРєР°РјРё
         allEventsListView = new ListView
         {
             Dock = DockStyle.Fill,
@@ -1205,17 +1205,17 @@ public class AllEventsForm : Form
             GridLines = true,
             Font = new Font("Consolas", 9f),
             BorderStyle = BorderStyle.None,
-            OwnerDraw = true // Включение кастомной отрисовки для темных заголовков
+            OwnerDraw = true // Р’РєР»СЋС‡РµРЅРёРµ РєР°СЃС‚РѕРјРЅРѕР№ РѕС‚СЂРёСЃРѕРІРєРё РґР»СЏ С‚РµРјРЅС‹С… Р·Р°РіРѕР»РѕРІРєРѕРІ
         };
 
-        // Настройка колонок для отображения информации о событиях
+        // РќР°СЃС‚СЂРѕР№РєР° РєРѕР»РѕРЅРѕРє РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РёРЅС„РѕСЂРјР°С†РёРё Рѕ СЃРѕР±С‹С‚РёСЏС…
         allEventsListView.Columns.Add("DATE", 120);
         allEventsListView.Columns.Add("TIME", 100);
         allEventsListView.Columns.Add("TITLE", 250);
         allEventsListView.Columns.Add("TYPE", 100);
         allEventsListView.Columns.Add("DESCRIPTION", 250);
 
-        // Кастомная отрисовка заголовков для соответствия темной теме
+        // РљР°СЃС‚РѕРјРЅР°СЏ РѕС‚СЂРёСЃРѕРІРєР° Р·Р°РіРѕР»РѕРІРєРѕРІ РґР»СЏ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёСЏ С‚РµРјРЅРѕР№ С‚РµРјРµ
         allEventsListView.DrawColumnHeader += (s, e) =>
         {
             e.Graphics.FillRectangle(new SolidBrush(border), e.Bounds);
@@ -1226,7 +1226,7 @@ public class AllEventsForm : Form
                 textBounds, text, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
         };
 
-        // Использование стандартной отрисовки для элементов и подэлементов
+        // РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ СЃС‚Р°РЅРґР°СЂС‚РЅРѕР№ РѕС‚СЂРёСЃРѕРІРєРё РґР»СЏ СЌР»РµРјРµРЅС‚РѕРІ Рё РїРѕРґСЌР»РµРјРµРЅС‚РѕРІ
         allEventsListView.DrawItem += (s, e) => { e.DrawDefault = true; };
         allEventsListView.DrawSubItem += (s, e) => { e.DrawDefault = true; };
 
@@ -1234,16 +1234,16 @@ public class AllEventsForm : Form
     }
 
     /// <summary>
-    /// Загрузка всех событий в ListView с сортировкой по дате
+    /// Р—Р°РіСЂСѓР·РєР° РІСЃРµС… СЃРѕР±С‹С‚РёР№ РІ ListView СЃ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РїРѕ РґР°С‚Рµ
     /// </summary>
     private void LoadAllEvents()
     {
-        // Получение всех событий из словаря и сортировка по дате начала
+        // РџРѕР»СѓС‡РµРЅРёРµ РІСЃРµС… СЃРѕР±С‹С‚РёР№ РёР· СЃР»РѕРІР°СЂСЏ Рё СЃРѕСЂС‚РёСЂРѕРІРєР° РїРѕ РґР°С‚Рµ РЅР°С‡Р°Р»Р°
         var allEvents = events.SelectMany(kvp => kvp.Value)
                             .OrderBy(e => e.StartDateTime)
                             .ToList();
 
-        // Добавление каждого события в ListView с форматированием
+        // Р”РѕР±Р°РІР»РµРЅРёРµ РєР°Р¶РґРѕРіРѕ СЃРѕР±С‹С‚РёСЏ РІ ListView СЃ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµРј
         foreach (var evt in allEvents)
         {
             var item = new ListViewItem(evt.StartDateTime.ToString("MMM dd, yyyy").ToUpper());
